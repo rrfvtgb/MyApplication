@@ -5,8 +5,20 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.JsonReader;
+import android.util.JsonWriter;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+import org.json.JSONTokener;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +33,24 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
+    public JSONObject lectJSON(String nameOfFile)
+    {
+        try {
+            ObjectInputStream o=new ObjectInputStream(new FileInputStream(nameOfFile));
+            String chaine = (String)o.readObject();
+            try {
+                JSONObject j = new JSONObject(new JSONTokener(chaine));
+                return j;
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
