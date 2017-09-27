@@ -1,11 +1,21 @@
 package com.rrfvtgb.myapplication;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 case R.id.navigation_result:
                     mTextMessage.setText(R.string.title_result);
+
+                    readJSON();
                     return true;
                 case R.id.navigation_setup:
                     mTextMessage.setText(R.string.title_setup);
@@ -34,6 +46,41 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+
+    protected void readJSON(){
+        File sdcard = Environment.getDataDirectory();
+
+        //Get the text file
+        File file = new File(sdcard,"file.txt");
+
+        //Read text from file
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            //You'll need to add proper error handling here
+        }
+
+        String result = text.toString();
+
+        //Set the text
+        mTextMessage.setText(result);
+
+        try {
+            JSONObject jObject = new JSONObject(result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
