@@ -9,6 +9,9 @@ import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -31,6 +34,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+import android.view.LayoutInflater;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,6 +79,16 @@ public class MainActivity extends AppCompatActivity {
         }catch(JSONException e){
             mTextMessage.setText("Error parsing JSON");
         }
+    }
+
+    protected void resetView(){
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        layout.removeAllViews();
+    }
+
+    protected void insertView(View view){
+        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
+        layout.addView(view);
     }
 
     protected JSONObject readJSON(){
