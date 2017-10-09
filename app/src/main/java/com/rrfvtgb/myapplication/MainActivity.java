@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONStringer;
@@ -43,12 +44,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    JSONObject j= readJSON();
-                    try {
-                        mTextMessage.setText(j.getJSONArray("service"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    showJSON();
 
                     return true;
                 case R.id.navigation_result:
@@ -67,6 +63,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
     };
+
+    public void showJSON(){
+        try {
+            JSONObject j = readJSON();
+            JSONArray services = j.getJSONArray("service");
+            JSONObject service = services.getJSONObject(0);
+
+            mTextMessage.setText(service.optString("title"));
+        }catch(JSONException e){
+            mTextMessage.setText("Error parsing JSON");
+        }
+    }
 
     protected JSONObject readJSON(){
 
@@ -112,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        showJSON();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
