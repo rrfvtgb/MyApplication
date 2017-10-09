@@ -41,7 +41,12 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private String profil;
+    private SelectionProfil vueProfil;
+    public void creationSelectionProfil()
+    {
+        vueProfil = new SelectionProfil(this);
 
+    }
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -49,19 +54,23 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-
-
                     return true;
                 case R.id.navigation_result:
-                    mTextMessage.setText(R.string.title_result);
+                    //mTextMessage.setText(R.string.title_result);
 
-                    readJSON();
+                    //readJSON();
                     return true;
                 case R.id.navigation_setup:
-                    mTextMessage.setText(R.string.title_setup);
+                    resetView();
+                    try {
+                        vueProfil.afficher();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    insertView(vueProfil);
                     return true;
                 case R.id.navigation_help:
-                    mTextMessage.setText(R.string.title_help);
+                    //mTextMessage.setText(R.string.title_help);
                     return true;
             }
             return false;
@@ -75,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
             JSONArray services = j.getJSONArray("service");
             JSONObject service = services.getJSONObject(0);
 
-            mTextMessage.setText(service.optString("title"));
+            //mTextMessage.setText(service.optString("title"));
         }catch(JSONException e){
-            mTextMessage.setText("Error parsing JSON");
+            //mTextMessage.setText("Error parsing JSON");
         }
     }
 
@@ -114,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
         String result = text.toString();
 
         //Set the text
-        mTextMessage.setText(result);
+        //mTextMessage.setText(result);
 
         try {
             JSONObject jObject = new JSONObject(result);
@@ -135,7 +144,9 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mTextMessage = (TextView) findViewById(R.id.message);
+      //  mTextMessage = (TextView) findViewById(R.id.message);
+        creationSelectionProfil();
+        vueProfil.setTable(readJSON());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
