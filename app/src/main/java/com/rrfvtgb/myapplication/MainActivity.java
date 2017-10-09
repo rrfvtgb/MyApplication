@@ -44,7 +44,11 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     JSONObject j= readJSON();
-                    mTextMessage.setText(j.optString("service"));
+                    try {
+                        mTextMessage.setText(j.getJSONArray("service"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
                     return true;
                 case R.id.navigation_result:
