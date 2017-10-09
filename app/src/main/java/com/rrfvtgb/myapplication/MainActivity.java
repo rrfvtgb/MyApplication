@@ -35,7 +35,7 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
-
+    private String profil;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    showJSON();
+
 
                     return true;
                 case R.id.navigation_result:
@@ -115,7 +115,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        try {
+            profil= readJSON().getJSONArray("service").getJSONObject(0).optString("title");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
