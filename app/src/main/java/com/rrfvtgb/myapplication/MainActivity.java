@@ -7,6 +7,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.JsonWriter;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
@@ -18,6 +19,7 @@ import org.json.JSONTokener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 
 import org.json.JSONException;
@@ -33,24 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
 
-    public JSONObject lectJSON(String nameOfFile)
-    {
-        try {
-            ObjectInputStream o=new ObjectInputStream(new FileInputStream(nameOfFile));
-            String chaine = (String)o.readObject();
-            try {
-                JSONObject j = new JSONObject(new JSONTokener(chaine));
-                return j;
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -58,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    JSONObject j= readJSON();
+                    mTextMessage.setText(j.optString("service"));
+
                     return true;
                 case R.id.navigation_result:
                     mTextMessage.setText(R.string.title_result);
@@ -77,17 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    protected void readJSON(){
-        File sdcard = Environment.getDataDirectory();
+    protected JSONObject readJSON(){
 
-        //Get the text file
-        File file = new File(sdcard,"file.txt");
 
         //Read text from file
         StringBuilder text = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new InputStreamReader( getAssets().open("service.json")));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -107,10 +91,13 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             JSONObject jObject = new JSONObject(result);
+            return jObject;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return null;
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +106,22 @@ public class MainActivity extends AppCompatActivity {
 
         mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.main_menu,menu);
+        return true;
+    }
+    public boolean onOptionItemSelected(MenuItem item)
+    {
+        switch(item.getItemId())
+        {
+            case R.id.action_cpu:
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
