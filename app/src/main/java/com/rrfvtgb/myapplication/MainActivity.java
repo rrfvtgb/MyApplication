@@ -2,6 +2,7 @@ package com.rrfvtgb.myapplication;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
@@ -36,11 +37,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import android.view.LayoutInflater;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-
-    private TextView mTextMessage;
-    private String profil;
+    private LinearLayout mLayout;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -50,18 +50,14 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
 
-
                     return true;
                 case R.id.navigation_result:
-                    mTextMessage.setText(R.string.title_result);
 
                     readJSON();
                     return true;
                 case R.id.navigation_setup:
-                    mTextMessage.setText(R.string.title_setup);
                     return true;
                 case R.id.navigation_help:
-                    mTextMessage.setText(R.string.title_help);
                     return true;
             }
             return false;
@@ -74,21 +70,17 @@ public class MainActivity extends AppCompatActivity {
             JSONObject j = readJSON();
             JSONArray services = j.getJSONArray("service");
             JSONObject service = services.getJSONObject(0);
-
-            mTextMessage.setText(service.optString("title"));
         }catch(JSONException e){
-            mTextMessage.setText("Error parsing JSON");
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG );
         }
     }
 
     protected void resetView(){
-        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
-        layout.removeAllViews();
+        mLayout.removeAllViews();
     }
 
     protected void insertView(View view){
-        LinearLayout layout = (LinearLayout) findViewById(R.id.layout);
-        layout.addView(view);
+        mLayout.addView(view);
     }
 
     protected JSONObject readJSON(){
@@ -114,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         String result = text.toString();
 
         //Set the text
-        mTextMessage.setText(result);
 
         try {
             JSONObject jObject = new JSONObject(result);
@@ -130,12 +121,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-            profil= readJSON().getJSONArray("service").getJSONObject(0).optString("title");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mTextMessage = (TextView) findViewById(R.id.message);
+
+        mLayout = (LinearLayout) findViewById(R.id.layout);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
