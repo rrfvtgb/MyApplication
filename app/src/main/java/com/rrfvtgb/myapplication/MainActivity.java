@@ -1,10 +1,12 @@
 package com.rrfvtgb.myapplication;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.JsonWriter;
@@ -42,15 +44,17 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
+    private MonitorDialog dialog;
 
     private TextView mTextMessage;
     public String profil;
     private SelectionProfil vueProfil;
-    public void creationSelectionProfil()
-    {
+
+    public void creationSelectionProfil() {
         vueProfil = new SelectionProfil(this);
 
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -80,34 +84,36 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    public void showJSON(){
+    public void showJSON() {
         try {
             JSONObject j = readJSON();
             JSONArray services = j.getJSONArray("service");
             JSONObject service = services.getJSONObject(0);
 
             //mTextMessage.setText(service.optString("title"));
-        }catch(JSONException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG );
+        } catch (JSONException e) {
+            Toast
+                    .makeText(this, e.getMessage(), Toast.LENGTH_LONG)
+                    .show();
         }
     }
 
-    protected void resetView(){
+    protected void resetView() {
         mLayout.removeAllViews();
     }
 
-    protected void insertView(View view){
+    protected void insertView(View view) {
         mLayout.addView(view);
     }
 
-    protected JSONObject readJSON(){
+    protected JSONObject readJSON() {
 
 
         //Read text from file
         StringBuilder text = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader( getAssets().open("service.json")));
+            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("service.json")));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -115,8 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 text.append('\n');
             }
             br.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             //You'll need to add proper error handling here
         }
 
@@ -136,13 +141,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         try {
-            profil= readJSON().getJSONArray("service").getJSONObject(0).optString("title");
+            profil = readJSON().getJSONArray("service").getJSONObject(0).optString("title");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        dialog = new MonitorDialog(this);
 
         mLayout = (LinearLayout) findViewById(R.id.layout);
         creationSelectionProfil();
@@ -153,18 +160,29 @@ public class MainActivity extends AppCompatActivity {
 
         showJSON();
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-    public boolean onOptionItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_cpu:
+                dialog.show();
+
+                Toast
+                        .makeText(this, "Display Dialog:Monitor", Toast.LENGTH_LONG)
+                        .show();
+
+                Log.d("MainActivity", "Action_cpu:selected");
+
                 return true;
+            default:
+                Log.d("MainActivity", "Action Unknown: "+item.getTitle());
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
