@@ -31,6 +31,7 @@ public class SelectionProfil extends LinearLayout {
 
     public void afficher() throws Exception
     {
+        this.removeAllViews();
         int i;
         ArrayList<Button> listeButton;
         listeButton = new ArrayList<Button>();
@@ -53,5 +54,7 @@ public class SelectionProfil extends LinearLayout {
     public SelectionProfil(MainActivity acti) {
         super(acti);
         this.acti=acti;
+        this.setOrientation(LinearLayout.VERTICAL);
+
     }
 }
