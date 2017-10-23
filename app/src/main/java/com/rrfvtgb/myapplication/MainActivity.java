@@ -1,12 +1,12 @@
 package com.rrfvtgb.myapplication;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AlertDialog;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.JsonWriter;
@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     public String profil;
     private SelectionProfil vueProfil;
+    private AffichageSysteme vueSysteme;
+    public void creationAffichageSysteme()
+    {
+        vueSysteme = new AffichageSysteme(this);
+    }
 
     public void creationSelectionProfil() {
         vueProfil = new SelectionProfil(this);
@@ -154,10 +159,9 @@ public class MainActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.layout);
         creationSelectionProfil();
         vueProfil.setTable(readJSON());
+        creationAffichageSysteme();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         showJSON();
     }
 
