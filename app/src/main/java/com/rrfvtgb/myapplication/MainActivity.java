@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.JsonWriter;
@@ -46,6 +48,11 @@ public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
     public String profil;
     private SelectionProfil vueProfil;
+    private AffichageSysteme vueSysteme;
+    public void creationAffichageSysteme()
+    {
+        vueSysteme = new AffichageSysteme(this);
+    }
     public void creationSelectionProfil()
     {
         vueProfil = new SelectionProfil(this);
@@ -149,10 +156,9 @@ public class MainActivity extends AppCompatActivity {
         mLayout = (LinearLayout) findViewById(R.id.layout);
         creationSelectionProfil();
         vueProfil.setTable(readJSON());
+        creationAffichageSysteme();
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
         showJSON();
     }
     @Override
@@ -161,11 +167,21 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.main_menu,menu);
         return true;
     }
+
+
     public boolean onOptionItemSelected(MenuItem item)
     {
         switch(item.getItemId())
         {
             case R.id.action_cpu:
+                Log.d("Main Activity"," info systeme");
+                resetView();
+                try {
+                    vueSysteme.afficher();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                insertView(vueSysteme);
                 return true;
         }
         return super.onOptionsItemSelected(item);
