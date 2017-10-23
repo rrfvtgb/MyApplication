@@ -8,6 +8,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.JsonWriter;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
 
     private TextView mTextMessage;
-    private String profil;
+    public String profil;
     private SelectionProfil vueProfil;
     public void creationSelectionProfil()
     {
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-
+                    Log.d("MainActivity", profil);
                     return true;
                 case R.id.navigation_result:
 
@@ -138,9 +139,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try {
+            profil= readJSON().getJSONArray("service").getJSONObject(0).optString("title");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
         mLayout = (LinearLayout) findViewById(R.id.layout);
-
         creationSelectionProfil();
         vueProfil.setTable(readJSON());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
