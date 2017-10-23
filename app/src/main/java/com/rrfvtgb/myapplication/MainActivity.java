@@ -63,16 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            resetView();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     Log.d("MainActivity", profil);
                     return true;
                 case R.id.navigation_result:
-
                     //readJSON();
                     return true;
                 case R.id.navigation_setup:
-                    resetView();
                     try {
                         vueProfil.afficher();
                     } catch (Exception e) {
@@ -133,8 +132,7 @@ public class MainActivity extends AppCompatActivity {
         //Set the text
 
         try {
-            JSONObject jObject = new JSONObject(result);
-            return jObject;
+            return new JSONObject(result);
         } catch (JSONException e) {
             e.printStackTrace();
         }
