@@ -1,81 +1,51 @@
 package com.rrfvtgb.myapplication;
 
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
-import android.support.design.internal.NavigationMenu;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.util.JsonReader;
-import android.util.JsonWriter;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
-import org.json.JSONTokener;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
-import android.view.LayoutInflater;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
-    private LinearLayout mLayout;
-    private static final int NUM_PAGES = 4;
     private MonitorDialog dialog;
 
-    private TextView mTextMessage;
     public String profil;
     private SelectionProfil vueProfil;
-    private AffichageSysteme vueSysteme;
-    public void creationAffichageSysteme()
-    {
-        vueSysteme = new AffichageSysteme(this);
-    }
 
     public void creationSelectionProfil() {
         vueProfil = new SelectionProfil(this);
 
     }
 
-    private ViewPager mPager;
-
-    private PagerAdapter mPagerAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            resetView();
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     Log.d("MainActivity", profil);
@@ -89,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    insertView(vueProfil);
                     return true;
                 case R.id.navigation_help:
                     return true;
@@ -110,17 +79,7 @@ public class MainActivity extends AppCompatActivity {
             Toast
                     .makeText(this, e.getMessage(), Toast.LENGTH_LONG)
                     .show();
-        } catch (JSONException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
         }
-    }
-
-    protected void resetView() {
-        mLayout.removeAllViews();
-    }
-
-    protected void insertView(View view) {
-        mLayout.addView(view);
     }
 
     protected JSONObject readJSON() {
@@ -169,47 +128,31 @@ public class MainActivity extends AppCompatActivity {
         dialog = new MonitorDialog(this);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new MainActivity.ScreenSlidePagerAdapter(getSupportFragmentManager());
-        mPager.setAdapter(mPagerAdapter);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        mLayout = (LinearLayout) findViewById(R.id.layout);
+        // Add Fragments to adapter one by one
+        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_home));
+        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_result));
+        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_setup));
+        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_help));
+        viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_dashboard_black_24dp);
+        tabLayout.getTabAt(2).setIcon(R.drawable.ic_build_black_24dp);
+        tabLayout.getTabAt(3).setIcon(R.drawable.ic_help_black_24dp);
+
         creationSelectionProfil();
         vueProfil.setTable(readJSON());
-        creationAffichageSysteme();
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         showJSON();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-    public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            // If the user is currently looking at the first step, allow the system to handle the
-            // Back button. This calls finish() on this activity and pops the back stack.
-            super.onBackPressed();
-        } else {
-            // Otherwise, select the previous step.
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
-        }
-    }
-    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return new ScreenSlidePageFragment();
-        }
-
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -234,5 +177,34 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 }
