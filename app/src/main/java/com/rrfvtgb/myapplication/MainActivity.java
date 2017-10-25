@@ -5,6 +5,12 @@ import android.os.Environment;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.JsonReader;
 import android.util.JsonWriter;
@@ -41,7 +47,11 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private LinearLayout mLayout;
+    private static final int NUM_PAGES = 4;
 
+    private ViewPager mPager;
+
+    private PagerAdapter mPagerAdapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -65,32 +75,32 @@ public class MainActivity extends AppCompatActivity {
 
     };
 
-    public void showJSON(){
+    public void showJSON() {
         try {
             JSONObject j = readJSON();
             JSONArray services = j.getJSONArray("service");
             JSONObject service = services.getJSONObject(0);
-        }catch(JSONException e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG );
+        } catch (JSONException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG);
         }
     }
 
-    protected void resetView(){
+    protected void resetView() {
         mLayout.removeAllViews();
     }
 
-    protected void insertView(View view){
+    protected void insertView(View view) {
         mLayout.addView(view);
     }
 
-    protected JSONObject readJSON(){
+    protected JSONObject readJSON() {
 
 
         //Read text from file
         StringBuilder text = new StringBuilder();
 
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader( getAssets().open("service.json")));
+            BufferedReader br = new BufferedReader(new InputStreamReader(getAssets().open("service.json")));
             String line;
 
             while ((line = br.readLine()) != null) {
@@ -98,8 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 text.append('\n');
             }
             br.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             //You'll need to add proper error handling here
         }
 
@@ -122,6 +131,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager) findViewById(R.id.pager);
+        mPagerAdapter = new MainActivity.ScreenSlidePagerAdapter(getSupportFragmentManager());
+        mPager.setAdapter(mPagerAdapter);
+
         mLayout = (LinearLayout) findViewById(R.id.layout);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
@@ -130,15 +144,39 @@ public class MainActivity extends AppCompatActivity {
         showJSON();
     }
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.main_menu,menu);
+    public void onBackPressed() {
+        if (mPager.getCurrentItem() == 0) {
+            // If the user is currently looking at the first step, allow the system to handle the
+            // Back button. This calls finish() on this activity and pops the back stack.
+            super.onBackPressed();
+        } else {
+            // Otherwise, select the previous step.
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
+    }
+    private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
+        public ScreenSlidePagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return new ScreenSlidePageFragment();
+        }
+
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
     }
-    public boolean onOptionItemSelected(MenuItem item)
-    {
-        switch(item.getItemId())
-        {
+
+    public boolean onOptionItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_cpu:
                 return true;
         }
