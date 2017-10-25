@@ -6,10 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONException;
+
 public class FragmentAccueil extends Fragment {
-
-    public FragmentAccueil(){
-
+    private MainActivity acti;
+    public FragmentAccueil(MainActivity acti){
+        this.acti=acti;
     }
 
     @Override
@@ -21,6 +23,12 @@ public class FragmentAccueil extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
+        try {
+            acti.vueFormulaire.afficher();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return acti.vueFormulaire;
+        //return inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
     }
 }

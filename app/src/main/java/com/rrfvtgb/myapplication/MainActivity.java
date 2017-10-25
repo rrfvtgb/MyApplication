@@ -32,9 +32,9 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private MonitorDialog dialog;
-    private Formulaire vueFormulaire;
+    public Formulaire vueFormulaire;
     public String profil;
-    private SelectionProfil vueProfil;
+    public SelectionProfil vueProfil;
 
     public void creationFormulaire()
     {
@@ -143,10 +143,10 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
         // Add Fragments to adapter one by one
-        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_home));
-        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_result));
-        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_setup));
-        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_help));
+        adapter.addFragment(new FragmentAccueil(this), getResources().getString(R.string.title_home));
+        adapter.addFragment(new FragmentAccueil(this), getResources().getString(R.string.title_result));
+        adapter.addFragment(new FragmentAccueil(this), getResources().getString(R.string.title_setup));
+        adapter.addFragment(new FragmentAccueil(this), getResources().getString(R.string.title_help));
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
