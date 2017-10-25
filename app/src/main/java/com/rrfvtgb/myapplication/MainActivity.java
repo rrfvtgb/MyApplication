@@ -161,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
         vueProfil.setTable(readJSON());
         //BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        creationAffichageSysteme();
         creationFormulaire();
         vueFormulaire.setTable(readJSON());
         showJSON();
