@@ -49,9 +49,14 @@ public class MainActivity extends AppCompatActivity {
     public String profil;
     private SelectionProfil vueProfil;
     private AffichageSysteme vueSysteme;
+    private Formulaire vueFormulaire;
     public void creationAffichageSysteme()
     {
         vueSysteme = new AffichageSysteme(this);
+    }
+    public void creationFormulaire()
+    {
+        vueFormulaire = new Formulaire(this);
     }
     public void creationSelectionProfil()
     {
@@ -67,6 +72,12 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     Log.d("MainActivity", profil);
+                    try {
+                        vueFormulaire.afficher();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    insertView(vueFormulaire);
                     return true;
                 case R.id.navigation_result:
                     //readJSON();
@@ -149,12 +160,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         mLayout = (LinearLayout) findViewById(R.id.layout);
         creationSelectionProfil();
         vueProfil.setTable(readJSON());
         creationAffichageSysteme();
+        creationFormulaire();
+        vueFormulaire.setTable(readJSON());
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         showJSON();
