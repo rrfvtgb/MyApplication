@@ -1,25 +1,37 @@
 package com.rrfvtgb.myapplication;
 
-import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.AttributeSet;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 /**
  * Created by fabie on 09/10/2017.
  */
 
-public class SelectionProfil extends LinearLayout {
+public class SelectionProfil extends Fragment {
+    private static final String TAG = "FragmentAccueil";
+
     JSONArray table;
     MainActivity acti;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.setup, container, false);
+
+        //Implem ici
+
+        return view;
+    }
+
     public void setTable(JSONObject j)
     {
         try {
@@ -28,7 +40,7 @@ public class SelectionProfil extends LinearLayout {
             e.printStackTrace();
         }
     }
-
+/*
     public void afficher() throws Exception
     {
         this.removeAllViews();
@@ -57,4 +69,5 @@ public class SelectionProfil extends LinearLayout {
         this.setOrientation(LinearLayout.VERTICAL);
 
     }
+*/
 }

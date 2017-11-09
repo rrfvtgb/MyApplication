@@ -1,15 +1,12 @@
 package com.rrfvtgb.myapplication;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.annotation.ColorInt;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -22,9 +19,19 @@ import java.util.ArrayList;
  * Created by fabie on 23/10/2017.
  */
 
-public class Formulaire extends LinearLayout {
+public class Formulaire extends RelativeLayout {
     JSONArray table;
     MainActivity acti;
+
+    public Formulaire(Context context) {
+        super(context);
+    }
+
+    public Formulaire(MainActivity context) {
+        super(context);
+        this.acti = context;
+    }
+
     public void setTable(JSONObject j)
     {
         try{
@@ -34,6 +41,7 @@ public class Formulaire extends LinearLayout {
             e.printStackTrace();
         }
     }
+
     void afficher() throws JSONException {
         this.removeAllViews();
         JSONObject tmp = null;
@@ -44,7 +52,7 @@ public class Formulaire extends LinearLayout {
             if(tmp.optString("title")==acti.profil)
                 break;
         }
-        this.setOrientation(LinearLayout.VERTICAL);
+        //this.setOrientation(LinearLayout.VERTICAL);
         //ajout du titre
         TextView titre = new TextView(this.getContext());
         titre.setText(tmp.optString("title"));
@@ -97,8 +105,5 @@ public class Formulaire extends LinearLayout {
             this.addView(listeVue.get(i));
         }
     }
-    public Formulaire(MainActivity context) {
-        super(context);
-        this.acti=context;
-    }
+
 }
