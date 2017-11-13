@@ -6,10 +6,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+
+import org.json.JSONException;
 
 public class FragmentAccueil extends Fragment {
     private static final String TAG = "FragmentAccueil";
     private MainActivity acti;
+    public Formulaire vueFormulaire;
 
     /*
     public FragmentAccueil(MainActivity acti){
@@ -21,16 +25,18 @@ public class FragmentAccueil extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.frag_accueil, container, false);
-        // Ton implem pour cet onglet ici
-        /*
+        RelativeLayout v = view.findViewById(R.id.tab1);
+
+        vueFormulaire = new Formulaire(this.getActivity());
+        vueFormulaire.refresh();
+        v.addView(vueFormulaire);
+
         try {
-            acti.vueFormulaire.afficher();
+            vueFormulaire.afficher();
         } catch (JSONException e) {
             e.printStackTrace();
         }
-*/
 
-        //return acti.vueFormulaire;
         return view;
     }
 }

@@ -8,6 +8,19 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Title" parent="@style/AppTheme">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="Label" parent="@style/AppTheme">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="AppFragment" parent="@style/AppTheme">
+        <item name="android:padding">30dp</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
