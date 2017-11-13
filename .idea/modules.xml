@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GitRepo.iml" filepath="$PROJECT_DIR$/GitRepo.iml" />
+      <module fileurl="file://C:\Users\rrfvtgb\AndroidStudioProjects\GitRepo\GitRepo.iml" filepath="C:\Users\rrfvtgb\AndroidStudioProjects\GitRepo\GitRepo.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
