@@ -61,13 +61,14 @@ public class MonitorDialog implements Runnable {
     }
 
     public void show(){
+        if(this.thread != null) {
+            this.dialog.hide();
+        }
+
         this.dialog.show();
         this.processor = (TextView) this.dialog.findViewById(R.id.processor);
         this.memory = (TextView) this.dialog.findViewById(R.id.memory);
 
-        if(this.thread != null) {
-            this.dialog.hide();
-        }
 
         this.thread = new Thread(this);
         this.thread.start();
