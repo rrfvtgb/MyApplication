@@ -94,7 +94,7 @@ public class MonitorDialog implements Runnable {
 
         this.lastCpu = Process.getElapsedCpuTime();
 
-        while(!this.thread.isInterrupted()) {
+        while(this.thread == Thread.currentThread()) {
             long cpu = Process.getElapsedCpuTime();
 
             long total = Runtime.getRuntime().totalMemory();
