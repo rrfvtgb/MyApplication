@@ -2,6 +2,7 @@ package com.rrfvtgb.myapplication;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,7 +18,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ProfilListener {
     private static final String TAG = "MainActivity";
     public String profil;
     public SelectionProfil vueProfil;
@@ -110,10 +111,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_cpu:
                 dialog.show();
 
-                Toast
-                        .makeText(this, "Display Dialog:Monitor", Toast.LENGTH_LONG)
-                        .show();
-
                 Log.d("MainActivity", "Action_cpu:selected");
 
                 return true;
@@ -124,4 +121,14 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void setProfil(JSONObject profil) throws JSONException {
+        ProfilListener accueilFrag = (ProfilListener)
+                getSupportFragmentManager().findFragmentById(R.id.tab1);
+
+        if (accueilFrag != null) {
+            // Call a method in the ArticleFragment to update its content
+            accueilFrag.setProfil(profil);
+        }
+    }
 }

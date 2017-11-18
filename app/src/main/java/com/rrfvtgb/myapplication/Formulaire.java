@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class Formulaire extends LinearLayout {
+public class Formulaire extends LinearLayout implements ProfilListener {
     JSONArray table;
     MainActivity acti;
     String profil;
