@@ -53,7 +53,7 @@ public class Fragment4 extends Fragment {
         GroupItem home = new GroupItem();
         home.title = "Home";
         ChildItem homechild = new ChildItem();
-        homechild.title = "Cette onglet vous permet de saisir vos informations";
+        homechild.title = "L'onglet 'Home' vous permet de saisir vos informations";
         homechild.hint = "Aide pour home";
         home.items.add(homechild);
         items.add(home);
@@ -61,7 +61,7 @@ public class Fragment4 extends Fragment {
         GroupItem result = new GroupItem();
         result.title = "Result";
         ChildItem resultchild = new ChildItem();
-        resultchild.title = "Cette onglet affiche les données selon le profil choisi";
+        resultchild.title = "L'onglet 'Result' affiche les données selon le profil choisi";
         resultchild.hint = "Aide pour result";
         result.items.add(resultchild);
         items.add(result);
@@ -69,7 +69,7 @@ public class Fragment4 extends Fragment {
         GroupItem setup = new GroupItem();
         setup.title = "Setup";
         ChildItem setupchild = new ChildItem();
-        setupchild.title = "Cet onglet permet d'importer un nouveau profil";
+        setupchild.title = "L'onglet 'Setup' permet d'importer un nouveau profil";
         setupchild.hint = "Aide pour setup";
         setup.items.add(setupchild);
         items.add(setup);
