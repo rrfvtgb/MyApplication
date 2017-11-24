@@ -2,6 +2,7 @@ package com.rrfvtgb.myapplication.element;
 
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
+import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 
@@ -20,6 +21,7 @@ public class EditElement implements FormulaireElement {
 
         editText = new EditText(c);
         editText.setMaxLines(1);
+        editText.setInputType(InputType.TYPE_CLASS_TEXT |InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE);
 
         textLayout = new TextInputLayout(c);
         textLayout.setHint(label);
