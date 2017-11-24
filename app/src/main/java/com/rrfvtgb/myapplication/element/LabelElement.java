@@ -18,6 +18,12 @@ public class LabelElement implements FormulaireElement {
         view.setText(label);
         view.setTextAppearance(R.style.Label);
     }
+
+    @Override
+    public String getLabel() {
+        return null;
+    }
+
     @Override
     public String getValue() {
         return null;

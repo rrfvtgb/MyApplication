@@ -17,15 +17,18 @@ import com.rrfvtgb.myapplication.element.RadioElement;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONStringer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Formulaire extends LinearLayout implements ProfilListener {
     JSONArray table;
     MainActivity acti;
     String profil;
+    ArrayList<FormulaireElement> elements = new ArrayList<>();
 
     public Formulaire(Context context) {
         super(context);
@@ -45,6 +48,7 @@ public class Formulaire extends LinearLayout implements ProfilListener {
     public void setProfil(JSONObject profil) throws JSONException {
         // Suppression des autres profils
         this.removeAllViews();
+        elements.clear();
 
         // Ajout du titre
         TextView titre = new TextView(this.getContext());
@@ -92,6 +96,27 @@ public class Formulaire extends LinearLayout implements ProfilListener {
 
     protected void addElement(FormulaireElement element){
         this.addView(element.element());
+
+        elements.add(element);
+    }
+
+    public String computeValue(){
+        JSONObject obj = new JSONObject();
+
+        for(FormulaireElement element: elements){
+            String value = element.getValue();
+            String label = element.getLabel();
+
+            if(value != null && label != null) {
+                try {
+                    obj.put(label, value);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return obj.toString();
     }
 
     public void afficher() throws JSONException {

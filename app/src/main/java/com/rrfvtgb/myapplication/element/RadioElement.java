@@ -31,16 +31,26 @@ public class RadioElement implements FormulaireElement {
     }
 
 
-
     @Override
-    public String getValue() {
+    public String getLabel() {
         // get selected radio button from radioGroup
         int selectedId = group.getCheckedRadioButtonId();
 
         // find the radiobutton by returned id
         RadioButton radioButton = group.findViewById(selectedId);
 
-        return radioButton.getText().toString();
+        if(radioButton != null) {
+            return radioButton.getText().toString();
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public String getValue() {
+        int selectedId = group.getCheckedRadioButtonId();
+
+        return selectedId != -1? "true": null;
     }
 
     @Override

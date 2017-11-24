@@ -32,6 +32,11 @@ public class EditElement implements FormulaireElement {
     }
 
     @Override
+    public String getLabel() {
+        return textLayout.getHint().toString();
+    }
+
+    @Override
     public String getValue() {
         return editText.getText().toString();
     }
