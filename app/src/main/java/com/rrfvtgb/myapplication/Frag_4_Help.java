@@ -16,8 +16,8 @@ import com.rrfvtgb.myapplication.AnimatedExpandableListView.AnimatedExpandableLi
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment4 extends Fragment {
-    private static final String TAG = "Fragment4";
+public class Frag_4_Help extends Fragment {
+    private static final String TAG = "Frag_4_Help";
 
     private AnimatedExpandableListView listView;
     private ExampleAdapter adapter;
@@ -26,7 +26,7 @@ public class Fragment4 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_4, container, false);
+        View view = inflater.inflate(R.layout.frag_4_Help, container, false);
 
         List<GroupItem> items = new ArrayList<GroupItem>();
 
@@ -70,7 +70,7 @@ public class Fragment4 extends Fragment {
         setup.title = "Setup";
         ChildItem setupchild = new ChildItem();
         setupchild.title = "L'onglet 'Setup' permet d'importer un nouveau profil";
-        setupchild.hint = "Aide pour setup";
+        setupchild.hint = "Aide pour frag_2_Result";
         setup.items.add(setupchild);
         items.add(setup);
 

@@ -15,8 +15,8 @@ import org.json.JSONObject;
  * Created by fabie on 09/10/2017.
  */
 
-public class SelectionProfil extends Fragment {
-    private static final String TAG = "FragmentAccueil";
+public class Frag_2_Result extends Fragment {
+    private static final String TAG = "Frag_1_Home";
 
     JSONArray table;
     MainActivity acti;
@@ -25,7 +25,7 @@ public class SelectionProfil extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.setup, container, false);
+        View view = inflater.inflate(R.layout.frag_2_Result, container, false);
 
         //Implem ici
 
@@ -63,7 +63,7 @@ public class SelectionProfil extends Fragment {
         }
 
     }
-    public SelectionProfil(MainActivity acti) {
+    public Frag_2_Result(MainActivity acti) {
         super(acti);
         this.acti=acti;
         this.setOrientation(LinearLayout.VERTICAL);

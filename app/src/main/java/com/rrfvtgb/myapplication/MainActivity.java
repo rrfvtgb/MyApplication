@@ -2,15 +2,12 @@ package com.rrfvtgb.myapplication;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,13 +18,13 @@ import java.io.InputStreamReader;
 public class MainActivity extends AppCompatActivity implements ProfilListener {
     private static final String TAG = "MainActivity";
     public String profil;
-    public SelectionProfil vueProfil;
+    public Frag_2_Result vueProfil;
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private MonitorDialog dialog;
 
     public void creationSelectionProfil() {
-        vueProfil = new SelectionProfil();
+        vueProfil = new Frag_2_Result();
 
     }
 
@@ -92,10 +89,10 @@ public class MainActivity extends AppCompatActivity implements ProfilListener {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentAccueil(), getResources().getString(R.string.title_home));
-        adapter.addFragment(new SelectionProfil(), getResources().getString(R.string.title_result));
-        adapter.addFragment(new Fragment3(), getResources().getString(R.string.title_setup));
-        adapter.addFragment(new Fragment4(), getResources().getString(R.string.title_help));
+        adapter.addFragment(new Frag_1_Home(), getResources().getString(R.string.title_home));
+        adapter.addFragment(new Frag_2_Result(), getResources().getString(R.string.title_result));
+        adapter.addFragment(new Frag_3_Setup(), getResources().getString(R.string.title_setup));
+        adapter.addFragment(new Frag_4_Help(), getResources().getString(R.string.title_help));
         viewPager.setAdapter(adapter);
     }
 
