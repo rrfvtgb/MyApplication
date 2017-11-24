@@ -39,4 +39,8 @@ public class Frag_1_Home extends Fragment {
 
         return view;
     }
+
+    public String computeValue(){
+        return vueFormulaire.computeValue();
+    }
 }

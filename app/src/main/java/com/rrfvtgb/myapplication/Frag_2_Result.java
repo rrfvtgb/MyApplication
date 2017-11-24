@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +21,8 @@ public class Frag_2_Result extends Fragment {
 
     JSONArray table;
     MainActivity acti;
+    TextView resultView;
+    String data = null;
 
     @Nullable
     @Override
@@ -27,9 +30,24 @@ public class Frag_2_Result extends Fragment {
 
         View view = inflater.inflate(R.layout.frag_2_result, container, false);
 
-        //Implem ici
+        resultView = view.findViewById(R.id.result_view);
+
+        if(data != null)
+            this.loadData(data);
 
         return view;
+    }
+
+    public void setData(String data){
+        this.data = data;
+
+        if(resultView != null) {
+            loadData(data);
+        }
+    }
+
+    public void loadData(String data){
+        resultView.setText(data);
     }
 
     public void setTable(JSONObject j)

@@ -15,10 +15,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity implements ProfilListener {
+public class MainActivity extends AppCompatActivity implements ProfilListener, TabLayout.OnTabSelectedListener {
     private static final String TAG = "MainActivity";
     public String profil;
-    public Frag_2_Result vueProfil;
+    private Frag_1_Home home;
+    private Frag_2_Result vueProfil;
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private MonitorDialog dialog;
@@ -77,6 +78,7 @@ public class MainActivity extends AppCompatActivity implements ProfilListener {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        tabLayout.addOnTabSelectedListener(this);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_dashboard_black_24dp);
@@ -88,8 +90,12 @@ public class MainActivity extends AppCompatActivity implements ProfilListener {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Frag_1_Home(), getResources().getString(R.string.title_home));
-        adapter.addFragment(new Frag_2_Result(), getResources().getString(R.string.title_result));
+
+        home = new Frag_1_Home();
+        vueProfil = new Frag_2_Result();
+
+        adapter.addFragment(home, getResources().getString(R.string.title_home));
+        adapter.addFragment(vueProfil, getResources().getString(R.string.title_result));
         adapter.addFragment(new Frag_3_Setup(), getResources().getString(R.string.title_setup));
         adapter.addFragment(new Frag_4_Help(), getResources().getString(R.string.title_help));
         viewPager.setAdapter(adapter);
@@ -126,5 +132,24 @@ public class MainActivity extends AppCompatActivity implements ProfilListener {
             // Call a method in the ArticleFragment to update its content
             accueilFrag.setProfil(profil);
         }
+    }
+
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        if(tab.getText() == getResources().getString(R.string.title_result)){
+            if(home != null && vueProfil != null){
+                vueProfil.setData(home.computeValue());
+            }
+        }
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
     }
 }
