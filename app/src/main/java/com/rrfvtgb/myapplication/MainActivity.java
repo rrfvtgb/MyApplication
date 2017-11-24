@@ -24,10 +24,6 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
     private ViewPager mViewPager;
     private MonitorDialog dialog;
 
-    public void creationSelectionProfil() {
-        vueProfil = new Frag_2_Result();
-    }
-
     protected JSONObject readJSON(){
         //Read text from file
         StringBuilder text = new StringBuilder();
@@ -84,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_dashboard_black_24dp);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_build_black_24dp);
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_help_black_24dp);
-
-        creationSelectionProfil();
     }
 
     private void setupViewPager(ViewPager viewPager) {
