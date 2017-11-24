@@ -27,15 +27,21 @@ public class Frag_1_Home extends Fragment {
         View view = inflater.inflate(R.layout.frag_1_home, container, false);
         RelativeLayout v = view.findViewById(R.id.tab1);
 
-        vueFormulaire = new Formulaire(this.getActivity());
-        vueFormulaire.refresh();
+        if(vueFormulaire == null) {
+            vueFormulaire = new Formulaire(this.getContext());
+            vueFormulaire.refresh();
+
+            try {
+                vueFormulaire.afficher();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }else{
+            ((ViewGroup) vueFormulaire.getParent()).removeView(vueFormulaire);
+        }
+
         v.addView(vueFormulaire);
 
-        try {
-            vueFormulaire.afficher();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         return view;
     }

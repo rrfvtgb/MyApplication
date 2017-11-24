@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
     public String profil;
     private Frag_1_Home home;
     private Frag_2_Result vueProfil;
+    private View main_content;
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private MonitorDialog dialog;
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
             e.printStackTrace();
         }
 
+        main_content = findViewById(R.id.main_content);
+
         dialog = new MonitorDialog(this);
 
         // Instantiate a ViewPager and a PagerAdapter.
@@ -85,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
+
         home = new Frag_1_Home();
         vueProfil = new Frag_2_Result();
 
@@ -93,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
         adapter.addFragment(new Frag_3_Setup(), getResources().getString(R.string.title_setup));
         adapter.addFragment(new Frag_4_Help(), getResources().getString(R.string.title_help));
         viewPager.setAdapter(adapter);
+
     }
 
     @Override
