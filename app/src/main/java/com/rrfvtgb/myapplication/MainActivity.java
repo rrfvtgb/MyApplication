@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements ProfilListener {
 
     public void creationSelectionProfil() {
         vueProfil = new Frag_2_Result();
-
     }
 
     protected JSONObject readJSON(){

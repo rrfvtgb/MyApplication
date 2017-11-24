@@ -9,6 +9,11 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import com.rrfvtgb.myapplication.element.EditElement;
+import com.rrfvtgb.myapplication.element.FormulaireElement;
+import com.rrfvtgb.myapplication.element.LabelElement;
+import com.rrfvtgb.myapplication.element.RadioElement;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,53 +55,43 @@ public class Formulaire extends LinearLayout implements ProfilListener {
 
         // Recuperation des elements
         JSONArray element = profil.getJSONArray("element");
-        EditText tmpEditText;
-        TextView tmpTextView;
-        RadioGroup tmpRadioGroup = null;
-        RadioButton tmpButton;
+        RadioElement tmpRadioGroup = null;
         for (int i = 0; i < element.length(); i++) {
             JSONObject el = element.getJSONObject(i);
+            String type = el.optString("type");
+            String label = el.optString("label");
 
-            Log.d("JSON-FORMULAIRE", el.optString("type"));
-            switch (el.optString("type")) {
+            Log.d("JSON-FORMULAIRE", type);
+            switch (type) {
                 case "edit":
-                    //
-
-                    TextInputLayout textInput = new TextInputLayout(this.getContext());
-                    textInput.setHint(el.optString("label"));
-                    textInput.setHintAnimationEnabled (true);
-                    textInput.setHintEnabled(true);
-
-                            tmpEditText = new EditText(this.getContext());
-                    textInput.addView(tmpEditText);
-                    textInput.setHintTextAppearance(R.style.Label);
-
-                    this.addView(textInput);
+                    this.addElement(
+                            new EditElement(this.getContext(), label)
+                    );
 
                     break;
                 case "label":
-                    tmpTextView = new TextView(this.getContext());
-                    tmpTextView.setText(element.getJSONObject(i).optString("label"));
-                    tmpTextView.setTextAppearance(R.style.Label);
-                    this.addView(tmpTextView);
+                    this.addElement(
+                            new LabelElement(this.getContext(), label)
+                    );
                     break;
                 case "button":
                     if (i == 0
                             || !element.getJSONObject(i - 1).optString("type").contentEquals("button")
                             || !element.getJSONObject(i - 1).optString("section").contentEquals(element.getJSONObject(i).optString("section"))) {
-                        tmpRadioGroup = new RadioGroup(this.getContext());
-                        tmpRadioGroup.setPadding(0, 20, 0, 20);
-                        this.addView(tmpRadioGroup);
+                        tmpRadioGroup = new RadioElement(this.getContext());
+                        this.addElement(tmpRadioGroup);
                     }
-                    tmpButton = new RadioButton(this.getContext());
-                    tmpButton.setText(element.getJSONObject(i).optString("label"));
-                    tmpButton.setTextAppearance(R.style.Label);
 
-                    tmpRadioGroup.addView(tmpButton);
+
+                    tmpRadioGroup.addValue(label);
                     //listeVue.add(tmpButton);
                     break;
             }
         }
+    }
+
+    protected void addElement(FormulaireElement element){
+        this.addView(element.element());
     }
 
     public void afficher() throws JSONException {
