@@ -1,15 +1,12 @@
 package com.rrfvtgb.myapplication;
 
-import android.app.DialogFragment;
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.util.Log;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -19,7 +16,6 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class Formulaire extends LinearLayout implements ProfilListener {
     JSONArray table;

@@ -14,7 +14,7 @@ public class Frag_3_Setup extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_3_Setup, container, false);
+        View view = inflater.inflate(R.layout.frag_3_setup, container, false);
 
         //Implem ici
 

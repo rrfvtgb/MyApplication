@@ -25,7 +25,7 @@ public class Frag_2_Result extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_2_Result, container, false);
+        View view = inflater.inflate(R.layout.frag_2_result, container, false);
 
         //Implem ici
 

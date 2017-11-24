@@ -26,7 +26,7 @@ public class Frag_4_Help extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_4_Help, container, false);
+        View view = inflater.inflate(R.layout.frag_4_help, container, false);
 
         List<GroupItem> items = new ArrayList<GroupItem>();
 
@@ -70,7 +70,7 @@ public class Frag_4_Help extends Fragment {
         setup.title = "Setup";
         ChildItem setupchild = new ChildItem();
         setupchild.title = "L'onglet 'Setup' permet d'importer un nouveau profil";
-        setupchild.hint = "Aide pour frag_2_Result";
+        setupchild.hint = "Aide pour frag_2_result";
         setup.items.add(setupchild);
         items.add(setup);
 

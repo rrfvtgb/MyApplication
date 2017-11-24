@@ -3,7 +3,7 @@
 		"title": "contact",
 		"element": [{
 			"section": "info",
-			"type": "label",
+			"type": "edit",
 			"label": "nom"
 		}, {
 			"section": "info",
@@ -23,7 +23,7 @@
 			"title": "mail",
 			"element": [{
 				"section": "info",
-				"type": "label",
+				"type": "edit",
 				"label": "nom"
 			}, {
 				"section": "info",

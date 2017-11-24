@@ -24,7 +24,7 @@ public class Frag_1_Home extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_1_Home, container, false);
+        View view = inflater.inflate(R.layout.frag_1_home, container, false);
         RelativeLayout v = view.findViewById(R.id.tab1);
 
         vueFormulaire = new Formulaire(this.getActivity());
