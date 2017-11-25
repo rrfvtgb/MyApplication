@@ -26,7 +26,7 @@ public class Frag_4_Help extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.frag_4_help, container, false);
+        View view = inflater.inflate(R.layout.frag_4__help, container, false);
 
         List<GroupItem> items = new ArrayList<GroupItem>();
 
@@ -70,9 +70,17 @@ public class Frag_4_Help extends Fragment {
         setup.title = "Setup";
         ChildItem setupchild = new ChildItem();
         setupchild.title = "L'onglet 'Setup' permet d'importer un nouveau profil";
-        setupchild.hint = "Aide pour frag_2_result";
+        setupchild.hint = "Aide pour frag_2__result";
         setup.items.add(setupchild);
         items.add(setup);
+
+        GroupItem help = new GroupItem();
+        help.title = "Developed by";
+        ChildItem helpchild = new ChildItem();
+        helpchild.title = "Brulé Geoffrey; Gheysens Amaury";
+        helpchild.hint = "Aide pour frag_2__result";
+        help.items.add(helpchild);
+        items.add(help);
 
         adapter = new ExampleAdapter(getContext());
         adapter.setData(items);
@@ -156,7 +164,7 @@ public class Frag_4_Help extends Fragment {
             ChildItem item = getChild(groupPosition, childPosition);
             if (convertView == null) {
                 holder = new ChildHolder();
-                convertView = inflater.inflate(R.layout.list_item, parent, false);
+                convertView = inflater.inflate(R.layout.frag_4_list_item, parent, false);
                 holder.title = (TextView) convertView.findViewById(R.id.text41);
                 holder.hint = (TextView) convertView.findViewById(R.id.text42);
                 convertView.setTag(holder);
@@ -196,7 +204,7 @@ public class Frag_4_Help extends Fragment {
             GroupItem item = getGroup(groupPosition);
             if (convertView == null) {
                 holder = new GroupHolder();
-                convertView = inflater.inflate(R.layout.list_group, parent, false);
+                convertView = inflater.inflate(R.layout.frag_4_list_group, parent, false);
                 holder.title = (TextView) convertView.findViewById(R.id.lblListHeader);
                 convertView.setTag(holder);
             } else {
