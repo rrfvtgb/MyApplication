@@ -18,7 +18,7 @@ import com.rrfvtgb.myapplication.R;
 public class RadioElement implements FormulaireElement {
 
     protected Context c;
-    protected ViewGroup layout;
+    protected LinearLayout layout;
     protected RadioGroup group;
     protected String label;
     protected TextView labelElement;
@@ -35,6 +35,8 @@ public class RadioElement implements FormulaireElement {
 
         this.layout.addView(this.labelElement);
         this.layout.addView(this.group);
+
+        this.layout.setOrientation(LinearLayout.VERTICAL);
     }
 
     public RadioElement(Context c, String label){
@@ -55,7 +57,6 @@ public class RadioElement implements FormulaireElement {
         this.label = label;
 
         this.labelElement.setText(label);
-        this.labelElement.setVisibility(View.VISIBLE);
     }
 
     protected RadioButton selectedRadio(){

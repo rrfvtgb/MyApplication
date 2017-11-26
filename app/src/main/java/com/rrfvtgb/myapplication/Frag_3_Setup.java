@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,42 +54,40 @@ public class Frag_3_Setup extends Fragment {
 
     protected void load(){
         if(profils.isEmpty() && this.getContext() != null) {
-            try {
-                populateMap(this.getContext());
-
-                for (String name: profils.keySet()){
-                    profils_names.add(name);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            preload(this.getContext());
         }
     }
 
     public void preload(Context c){
         try {
             populateMap(c);
+
+            for (String name: profils.keySet()){
+                profils_names.add(name);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     public String getActiveProfil(){
+        if(profil_spinner != null) {
         return (String) profil_spinner.getSelectedItem();
+        }else {
+            return profils_names.get(0);
+        }
     }
 
     public JSONObject getProfilData(){
         load();
 
-        if(profil_spinner != null) {
-            return profils.get(this.getActiveProfil());
-        }else {
-            return profils.get(profils_names.get(0));
-        }
+        return profils.get(this.getActiveProfil());
     }
 
     protected void populateMap(Context c) throws JSONException {
         JSONObject data = readJSON(c);
+
+        Log.i(TAG, data.toString());
 
         JSONArray services = data.optJSONArray("service");
 
@@ -97,6 +96,7 @@ public class Frag_3_Setup extends Fragment {
 
             String title = s.getString("title");
 
+            Log.i(TAG, title);
             profils.put(title, s);
         }
 

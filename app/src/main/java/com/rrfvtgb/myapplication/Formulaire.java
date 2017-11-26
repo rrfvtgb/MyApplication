@@ -95,6 +95,7 @@ public class Formulaire extends LinearLayout  {
                     }
 
                     this.addElement(radio);
+                    break;
 
                 default:
                 // Not found, using edit instead

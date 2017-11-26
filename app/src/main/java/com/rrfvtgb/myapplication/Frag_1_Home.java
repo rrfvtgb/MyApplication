@@ -14,7 +14,8 @@ import org.json.JSONObject;
 public class Frag_1_Home extends Fragment {
     private static final String TAG = "Frag_1_Home";
     public Formulaire vueFormulaire;
-    private MainActivity acti;
+
+    private JSONObject profilData;
 
     /*
     public Frag_1_Home(MainActivity acti){
@@ -31,6 +32,15 @@ public class Frag_1_Home extends Fragment {
 
         if(vueFormulaire == null) {
             vueFormulaire = new Formulaire(this.getContext());
+
+            if(profilData != null){
+                try {
+                    vueFormulaire.setProfil(profilData);
+                    profilData = null;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }else{
             ((ViewGroup) vueFormulaire.getParent()).removeView(vueFormulaire);
         }
@@ -42,7 +52,11 @@ public class Frag_1_Home extends Fragment {
     }
 
     public void setProfilData(JSONObject obj) throws JSONException {
-        vueFormulaire.setProfil(obj);
+        if(vueFormulaire != null) {
+            vueFormulaire.setProfil(obj);
+        }else{
+            profilData = obj;
+        }
     }
 
     public String computeValue(){
