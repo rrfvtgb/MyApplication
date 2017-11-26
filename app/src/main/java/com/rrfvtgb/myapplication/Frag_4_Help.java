@@ -70,7 +70,7 @@ public class Frag_4_Help extends Fragment {
         setup.title = "Setup";
         ChildItem setupchild = new ChildItem();
         setupchild.title = "L'onglet 'Setup' permet d'importer un nouveau profil";
-        setupchild.hint = "Aide pour frag_2__result";
+        setupchild.hint = "Aide pour setup";
         setup.items.add(setupchild);
         items.add(setup);
 
@@ -78,7 +78,7 @@ public class Frag_4_Help extends Fragment {
         help.title = "Developed by";
         ChildItem helpchild = new ChildItem();
         helpchild.title = "Brulé Geoffrey; Gheysens Amaury";
-        helpchild.hint = "Aide pour frag_2__result";
+        helpchild.hint = "Crédits";
         help.items.add(helpchild);
         items.add(help);
 

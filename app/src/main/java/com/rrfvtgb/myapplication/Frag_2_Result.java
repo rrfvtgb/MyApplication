@@ -23,7 +23,7 @@ import java.util.List;
  */
 
 public class Frag_2_Result extends Fragment {
-    private static final String TAG = "Frag_1_Home";
+    private static final String TAG = "Frag_2_Result";
 
     JSONArray table;
     MainActivity acti;

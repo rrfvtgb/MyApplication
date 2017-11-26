@@ -17,56 +17,22 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class MainActivity extends AppCompatActivity implements ProfilListener, TabLayout.OnTabSelectedListener {
+public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
     private static final String TAG = "MainActivity";
-    public String profil;
     private Frag_1_Home home;
     private Frag_2_Result vueProfil;
+    private Frag_3_Setup setup;
     private View main_content;
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private MonitorDialog dialog;
-
-    protected JSONObject readJSON(){
-        //Read text from file
-        StringBuilder text = new StringBuilder();
-
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(this.getAssets().open("service.json")));
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                text.append(line);
-                text.append('\n');
-            }
-            br.close();
-        } catch (IOException e) {
-            //You'll need to add proper error handling here
-        }
-
-        String result = text.toString();
-
-        //Set the text
-
-        try {
-            return new JSONObject(result);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+    private String activeProfil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
-
-        try {
-            profil = readJSON().getJSONArray("service").getJSONObject(0).optString("title");
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
         main_content = findViewById(R.id.main_content);
 
@@ -78,8 +44,8 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
         setupViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(mViewPager);
         tabLayout.addOnTabSelectedListener(this);
+        tabLayout.setupWithViewPager(mViewPager);
 
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_home_black_24dp);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_dashboard_black_24dp);
@@ -91,15 +57,18 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
 
-        home = new Frag_1_Home();
+        home      = new Frag_1_Home();
         vueProfil = new Frag_2_Result();
+        setup     = new Frag_3_Setup();
+
+        setup.preload(this);
 
         adapter.addFragment(home, getResources().getString(R.string.title_home));
         adapter.addFragment(vueProfil, getResources().getString(R.string.title_result));
-        adapter.addFragment(new Frag_3_Setup(), getResources().getString(R.string.title_setup));
+        adapter.addFragment(setup, getResources().getString(R.string.title_setup));
         adapter.addFragment(new Frag_4_Help(), getResources().getString(R.string.title_help));
-        viewPager.setAdapter(adapter);
 
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -125,19 +94,18 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
     }
 
     @Override
-    public void setProfil(JSONObject profil) throws JSONException {
-        ProfilListener accueilFrag = (ProfilListener)
-                getSupportFragmentManager().findFragmentById(R.id.tab1);
-
-        if (accueilFrag != null) {
-            // Call a method in the ArticleFragment to update its content
-            accueilFrag.setProfil(profil);
-        }
-    }
-
-    @Override
     public void onTabSelected(TabLayout.Tab tab) {
-        if(tab.getText() == getResources().getString(R.string.title_result)){
+        if(tab.getText() == getResources().getString(R.string.title_home)){
+            if(activeProfil == null || !activeProfil.equals(setup.getActiveProfil()) ) {
+                try {
+                    home.setProfilData(setup.getProfilData());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                activeProfil = setup.getActiveProfil();
+            }
+        } else if(tab.getText() == getResources().getString(R.string.title_result)){
             if(home != null && vueProfil != null){
                 vueProfil.setData(home.computeValue());
             }
@@ -145,12 +113,8 @@ public class MainActivity extends AppCompatActivity implements ProfilListener, T
     }
 
     @Override
-    public void onTabUnselected(TabLayout.Tab tab) {
-
-    }
+    public void onTabUnselected(TabLayout.Tab tab) {}
 
     @Override
-    public void onTabReselected(TabLayout.Tab tab) {
-
-    }
+    public void onTabReselected(TabLayout.Tab tab) {}
 }

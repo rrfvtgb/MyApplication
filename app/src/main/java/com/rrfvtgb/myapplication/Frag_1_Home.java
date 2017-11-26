@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Frag_1_Home extends Fragment {
     private static final String TAG = "Frag_1_Home";
@@ -30,13 +31,6 @@ public class Frag_1_Home extends Fragment {
 
         if(vueFormulaire == null) {
             vueFormulaire = new Formulaire(this.getContext());
-            vueFormulaire.refresh();
-
-            try {
-                vueFormulaire.afficher();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
         }else{
             ((ViewGroup) vueFormulaire.getParent()).removeView(vueFormulaire);
         }
@@ -45,6 +39,10 @@ public class Frag_1_Home extends Fragment {
 
 
         return view;
+    }
+
+    public void setProfilData(JSONObject obj) throws JSONException {
+        vueFormulaire.setProfil(obj);
     }
 
     public String computeValue(){
