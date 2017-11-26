@@ -67,7 +67,11 @@ public class Frag_2_Result extends Fragment {
             //resultView.setText(result);
             ArrayAdapter adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.frag_2_listview, values);
             ListView listView = (ListView) getActivity().findViewById(R.id.result_view);
-            listView.setAdapter(adapter);
+
+            // Possible null
+            if(listView != null) {
+                listView.setAdapter(adapter);
+            }
             Toast.makeText(getActivity(), "Json Data has loaded", Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();

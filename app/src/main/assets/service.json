@@ -1,24 +1,25 @@
 {
-	"service": [{
-		"title": "contact",
-		"element": [{
-			"section": "info",
-			"type": "edit",
-			"label": "nom"
-		}, {
-			"section": "info",
-			"type": "edit",
-			"label": "prenom"
-		}, {
-			"section": "info",
-			"type": "button",
-			"label": "homme"
-		}, {
-			"section": "info",
-			"type": "button",
-			"label": "femme"
-		}]
-	},
+	"service": [
+		{
+			"title": "contact",
+			"element": [{
+				"section": "info",
+				"type": "edit",
+				"label": "nom"
+			}, {
+				"section": "info",
+				"type": "edit",
+				"label": "prenom"
+			},{
+				"section": "info",
+				"type": "radio",
+				"label": "genre",
+				"values":[
+					"Homme",
+					"Femme"
+				]
+			}]
+		},
 		{
 			"title": "mail",
 			"element": [{

@@ -67,12 +67,6 @@ public class Formulaire extends LinearLayout implements ProfilListener {
 
             Log.d("JSON-FORMULAIRE", type);
             switch (type) {
-                case "edit":
-                    this.addElement(
-                            new EditElement(this.getContext(), label)
-                    );
-
-                    break;
                 case "label":
                     this.addElement(
                             new LabelElement(this.getContext(), label)
@@ -89,6 +83,26 @@ public class Formulaire extends LinearLayout implements ProfilListener {
 
                     tmpRadioGroup.addValue(label);
                     //listeVue.add(tmpButton);
+                    break;
+
+                case "radio":
+                    RadioElement radio = new RadioElement(this.getContext(), label);
+
+                    JSONArray values = el.optJSONArray("values");
+
+                    for(int j = 0; j<values.length(); j++){
+                        radio.addValue(values.getString(j));
+                    }
+
+                    this.addElement(radio);
+
+                default:
+                // Not found, using edit instead
+                case "edit":
+                    this.addElement(
+                            new EditElement(this.getContext(), label)
+                    );
+
                     break;
             }
         }

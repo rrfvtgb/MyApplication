@@ -1,9 +1,13 @@
 package com.rrfvtgb.myapplication.element;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.rrfvtgb.myapplication.R;
 
@@ -13,13 +17,30 @@ import com.rrfvtgb.myapplication.R;
 
 public class RadioElement implements FormulaireElement {
 
-    Context c;
-    RadioGroup group;
+    protected Context c;
+    protected ViewGroup layout;
+    protected RadioGroup group;
+    protected String label;
+    protected TextView labelElement;
 
     public RadioElement(Context c){
         this.c = c;
+
+        this.layout = new LinearLayout(c);
+
+        this.labelElement = new TextView(c);
+
         this.group = new RadioGroup(c);
         this.group.setPadding(0, 20, 0, 20);
+
+        this.layout.addView(this.labelElement);
+        this.layout.addView(this.group);
+    }
+
+    public RadioElement(Context c, String label){
+        this(c);
+
+        this.setLabel(label);
     }
 
     public void addValue(String label){
@@ -30,14 +51,28 @@ public class RadioElement implements FormulaireElement {
         this.group.addView(radio);
     }
 
+    public void setLabel(String label){
+        this.label = label;
 
-    @Override
-    public String getLabel() {
+        this.labelElement.setText(label);
+        this.labelElement.setVisibility(View.VISIBLE);
+    }
+
+    protected RadioButton selectedRadio(){
         // get selected radio button from radioGroup
         int selectedId = group.getCheckedRadioButtonId();
 
         // find the radiobutton by returned id
-        RadioButton radioButton = group.findViewById(selectedId);
+        return group.findViewById(selectedId);
+    }
+
+    @Override
+    public String getLabel() {
+        if(this.label != null){
+            return this.label;
+        }
+
+        RadioButton radioButton = selectedRadio();
 
         if(radioButton != null) {
             return radioButton.getText().toString();
@@ -48,9 +83,15 @@ public class RadioElement implements FormulaireElement {
 
     @Override
     public String getValue() {
-        int selectedId = group.getCheckedRadioButtonId();
+        RadioButton radioButton = selectedRadio();
 
-        return selectedId != -1? "true": null;
+        if(radioButton == null) {
+            return null;
+        }else if(label == null){
+            return "true";
+        }else{
+            return radioButton.getText().toString();
+        }
     }
 
     @Override
@@ -60,6 +101,6 @@ public class RadioElement implements FormulaireElement {
 
     @Override
     public View element() {
-        return this.group;
+        return this.layout;
     }
 }
