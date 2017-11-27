@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +32,8 @@ import java.util.Map;
 
 public class Frag_3_Setup extends Fragment implements View.OnClickListener {
     static final int IMPORT_JSON_REQUEST = 30;  // The request code
+
+    private static final String AUTHORITY = "com.rrfvtgb.myapplication";
     private static final String TAG = "Frag_3_Home";
     protected Map<String, JSONObject> profils = new HashMap<>();
     protected ArrayList<String> profils_names = new ArrayList<>();
@@ -196,7 +199,10 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
     public void askExport() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(this.getContext().getFilesDir(), "service.json")));
+        sendIntent.putExtra(Intent.EXTRA_STREAM,
+                FileProvider.getUriForFile(this.getContext(), AUTHORITY,
+                        new File(this.getContext().getFilesDir(), "service.json")));
+        sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
 
