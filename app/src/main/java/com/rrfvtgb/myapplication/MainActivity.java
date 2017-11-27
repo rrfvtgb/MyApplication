@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import org.json.JSONException;
@@ -18,16 +17,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private Frag_1_Home home;
     private Frag_2_Result vueProfil;
     private Frag_3_Setup setup;
-    private View main_content;
-    private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private MonitorDialog dialog;
     private String activeProfil;
-
-    public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,12 +27,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate: Starting.");
 
-        main_content = findViewById(R.id.main_content);
 
         dialog = new MonitorDialog(this);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
         mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
@@ -54,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         tabLayout.getTabAt(3).setIcon(R.drawable.ic_help_black_24dp);
     }
 
+    /**
+     * Setup View Pager avec les fragments
+     */
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
@@ -78,6 +71,9 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return true;
     }
 
+    /**
+     * Detection bouton navigation
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -94,6 +90,20 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Ferme le clavier virtuel
+     */
+    private void hideSoftKeyboard() {
+        InputMethodManager inputMethodManager = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
+
+        if (inputMethodManager != null && this.getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(this.getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * Event Selection Tab
+     */
     @Override
     public void onTabSelected(TabLayout.Tab tab) {
         if(tab.getText() == getResources().getString(R.string.title_home)){
@@ -107,11 +117,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 activeProfil = setup.getActiveProfil();
             }
         } else if(tab.getText() == getResources().getString(R.string.title_result)){
-            hideSoftKeyboard(this);
+            hideSoftKeyboard();
             if(home != null && vueProfil != null){
                 vueProfil.setData(home.computeValue());
             }
-        } else hideSoftKeyboard(this);
+        } else hideSoftKeyboard();
     }
 
     @Override

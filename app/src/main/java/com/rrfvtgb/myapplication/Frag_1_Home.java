@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,8 +35,16 @@ public class Frag_1_Home extends Fragment {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            } else {
+                /*
+                 * Aucun profil chargé
+                 */
+                Toast.makeText(getContext(), "[Still loading]", 2000).show();
             }
         } else {
+            /*
+             * Réaffectation du formulaire pour garder les données
+             */
             ((ViewGroup) vueFormulaire.getParent()).removeView(vueFormulaire);
         }
 
@@ -45,7 +54,9 @@ public class Frag_1_Home extends Fragment {
         return view;
     }
 
-    //selection du profil
+    /**
+     * Défini les données à rentrer dans le formulaire
+     */
     public void setProfilData(JSONObject obj) throws JSONException {
         if (vueFormulaire != null) {
             vueFormulaire.setProfil(obj);
@@ -54,8 +65,14 @@ public class Frag_1_Home extends Fragment {
         }
     }
 
-    //récupère les infos du profil
+    /**
+     * Récupère les données rentrées dans le formulaire
+     */
     public String computeValue() {
-        return vueFormulaire.computeValue();
+        if (vueFormulaire != null) {
+            return vueFormulaire.computeValue();
+        } else {
+            return null;
+        }
     }
 }

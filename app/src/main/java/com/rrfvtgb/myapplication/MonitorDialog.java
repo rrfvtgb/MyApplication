@@ -8,6 +8,7 @@ import android.os.Process;
 import android.support.v7.app.AlertDialog;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 /**
@@ -22,13 +23,14 @@ public class MonitorDialog implements Runnable {
     private TextView processor;
     private TextView memory;
     private long lastCpu;
+    private long lastCpuTimestamp;
     private float last_CPU;
     private long last_memUsage;
     private long last_memMax;
     private RefreshHandler mRedrawHandler = new RefreshHandler();
 
 
-    public MonitorDialog(Activity context){
+    public MonitorDialog(Activity context) {
         this.context = context;
 
         this.create();
@@ -58,8 +60,31 @@ public class MonitorDialog implements Runnable {
         this.memory = this.dialog.findViewById(R.id.memory);
     }
 
-    public void show(){
-        if(this.thread != null) {
+    /**
+     * Renvoie l'utilisation en CPU
+     */
+    public float getCPUUsage() {
+        long cpu = Process.getElapsedCpuTime();
+        long timestamp = System.currentTimeMillis();
+
+        if (timestamp == lastCpuTimestamp)
+            return last_CPU;
+
+        float result = (cpu - lastCpu) * 100f / (timestamp - lastCpuTimestamp);
+
+        lastCpu = cpu;
+        lastCpuTimestamp = timestamp;
+
+        last_CPU = result;
+
+        return result;
+    }
+
+    /**
+     * Affiche le dialog et lance le thread en background
+     */
+    public void show() {
+        if (this.thread != null) {
             this.dialog.hide();
         }
 
@@ -73,7 +98,10 @@ public class MonitorDialog implements Runnable {
         updateUI();
     }
 
-    public void hide(){
+    /**
+     * Cache le dialog et stop le thread
+     */
+    public void hide() {
         this.dialog.hide();
         this.thread.interrupt();
         this.thread = null;
@@ -81,7 +109,7 @@ public class MonitorDialog implements Runnable {
 
     @Override
     public void run() {
-        if(this.processor == null)
+        if (this.processor == null)
             return;
 
         long max = Runtime.getRuntime().maxMemory();
@@ -90,19 +118,14 @@ public class MonitorDialog implements Runnable {
             last_memMax = max >> 20;
         }
 
-        this.lastCpu = Process.getElapsedCpuTime();
-
-        while(this.thread == Thread.currentThread()) {
+        while (this.thread == Thread.currentThread()) {
             long cpu = Process.getElapsedCpuTime();
 
             long total = Runtime.getRuntime().totalMemory();
 
             synchronized (this) {
-                last_CPU = ((float) (cpu - this.lastCpu) * 100) / interval;
                 last_memUsage = total >> 20;
             }
-
-            this.lastCpu = cpu;
 
             try {
                 Thread.sleep(interval);
@@ -112,12 +135,19 @@ public class MonitorDialog implements Runnable {
         }
     }
 
-    private void updateUI(){
-        if(this.thread != null) {
-            mRedrawHandler.sleep(1000);
+    /**
+     * Mettre à jour l'UI (à partir du main Thread)
+     */
+    private void updateUI() {
+        if (this.thread != null) {
+            mRedrawHandler.sleep(interval);
+
+            DecimalFormat df = new DecimalFormat();
+            df.setMaximumFractionDigits(2);
 
             synchronized (this) {
-                processor.setText(last_CPU + "% CPU");
+
+                processor.setText(String.format(Locale.getDefault(), "%s %% CPU", df.format(getCPUUsage())));
                 memory.setText(String.format(Locale.getDefault(), "%d Mo / %d Mo Memory", last_memUsage, last_memMax));
             }
         }
