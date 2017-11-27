@@ -44,7 +44,11 @@ public class Frag_2_Result extends Fragment {
         return view;
     }
 
-    //récupère données profil
+    /**
+     * récupère données profil
+     *
+     * @param data
+     */
     public void setData(String data) {
         this.data = data;
 
@@ -53,7 +57,10 @@ public class Frag_2_Result extends Fragment {
         }
     }
 
-    //parse le json et affiche les données profil
+    /**parse le json et affiche les données profil
+     *
+     * @param data
+     */
     public void loadData(String data) {
         //liste des données
         List<String> values = new ArrayList<>();

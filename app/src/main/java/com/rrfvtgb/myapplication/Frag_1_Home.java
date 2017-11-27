@@ -36,13 +36,13 @@ public class Frag_1_Home extends Fragment {
                     e.printStackTrace();
                 }
             } else {
-                /*
+                /**
                  * Aucun profil chargé
                  */
-                Toast.makeText(getContext(), "[Still loading]", 2000).show();
+                Toast.makeText(getContext(), "Aucun profil sélectionné", Toast.LENGTH_SHORT).show();
             }
         } else {
-            /*
+            /**
              * Réaffectation du formulaire pour garder les données
              */
             ((ViewGroup) vueFormulaire.getParent()).removeView(vueFormulaire);

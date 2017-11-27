@@ -266,7 +266,7 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         sendIntent.setType("application/json");
         startActivity(sendIntent);
 
-        Log.i(TAG, "Exported profil");
+        Log.i(TAG, "Exported profile");
     }
 
     /**

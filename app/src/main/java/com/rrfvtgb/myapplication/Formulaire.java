@@ -40,7 +40,10 @@ public class Formulaire extends LinearLayout  {
     }
 
     public void setProfil(JSONObject profil) throws JSONException {
-        // Suppression des autres profils
+        /**
+         *Suppresion des autres profils
+         */
+
         this.removeAllViews();
         elements.clear();
 
@@ -48,14 +51,18 @@ public class Formulaire extends LinearLayout  {
             return;
         }
 
-        // Ajout du titre
+        /** Ajout du titre
+         *
+         */
         TextView titre = new TextView(this.getContext());
         titre.setText(profil.optString("title"));
         titre.setTextAppearance(R.style.Title);
         titre.setPadding(0, 0, 0, 40);
         this.addView(titre);
 
-        // Recuperation des elements
+        /** Recuperation des elements
+         *
+         */
         JSONArray element = profil.getJSONArray("element");
         RadioElement tmpRadioGroup = null;
         for (int i = 0; i < element.length(); i++) {
@@ -80,7 +87,6 @@ public class Formulaire extends LinearLayout  {
 
 
                     tmpRadioGroup.addValue(label);
-                    //listeVue.add(tmpButton);
                     break;
 
                 case "radio":
@@ -96,7 +102,9 @@ public class Formulaire extends LinearLayout  {
                     break;
 
                 default:
-                // Not found, using edit instead
+                    /** Not found, using edit instead
+                     *
+                     */
                 case "edit":
                     this.addElement(
                             new EditElement(this.getContext(), label)

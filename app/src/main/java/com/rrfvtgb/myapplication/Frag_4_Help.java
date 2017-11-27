@@ -28,10 +28,14 @@ public class Frag_4_Help extends Fragment {
 
         View view = inflater.inflate(R.layout.frag_4__help, container, false);
 
-//liste d'objets
+/** Prépare la liste d'objets
+ *
+ */
         List<GroupItem> items = new ArrayList<GroupItem>();
 
-//création des différents objets et ajout à la liste
+/** Création des différents objets et ajout à la liste
+ *
+ */
         GroupItem home = new GroupItem();
         home.title = "Home";
         ChildItem homechild = new ChildItem();
@@ -63,15 +67,18 @@ public class Frag_4_Help extends Fragment {
         helpchild.hint = "Crédits";
         help.items.add(helpchild);
         items.add(help);
-//affichage de la liste d'objet avec l'adapter
+        /** affichage de la liste d'objet avec l'adapter
+         *
+         */
         adapter = new ExampleAdapter(getContext());
         adapter.setData(items);
 
         listView = view.findViewById(R.id.list);
         listView.setAdapter(adapter);
 
-        // In order to show animations, we need to use a custom click handler
-        // for our ExpandableListView.
+        /** In order to show animations, we need to use a custom click handler
+         *  for our ExpandableListView.
+         */
         listView.setOnGroupClickListener(new OnGroupClickListener() {
 
             @Override
@@ -91,7 +98,8 @@ public class Frag_4_Help extends Fragment {
 
         return view;
     }
-    /*
+
+    /**
      * Preparing the list data
      */
     private static class GroupItem {
