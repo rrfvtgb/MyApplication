@@ -52,7 +52,7 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         load();
         //sélectionneur profil
         profil_spinner = view.findViewById(R.id.profil_select);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
                 R.layout.frag_3_profil_item, profils_names);
         profil_spinner.setAdapter(adapter);
 
@@ -193,12 +193,22 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         startActivityForResult(intent, IMPORT_JSON_REQUEST);
     }
 
+    public void askExport() {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(this.getContext().getFilesDir(), "service.json")));
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
+
+        Log.i(TAG, "Exported profil");
+    }
+
     @Override
     public void onClick(View view) {
         if (view == input) {
             askImport();
         } else if (view == output) {
-
+            askExport();
         }
     }
 
@@ -248,7 +258,7 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
 
             saveProfil();
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
                     R.layout.frag_3_profil_item, profils_names);
             profil_spinner.setAdapter(adapter);
         } catch (JSONException e) {
