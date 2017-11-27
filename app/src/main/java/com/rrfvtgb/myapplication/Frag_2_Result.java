@@ -38,40 +38,47 @@ public class Frag_2_Result extends Fragment {
 
         resultView = view.findViewById(R.id.result_view);
 
-        if(data != null)
+        if (data != null)
             this.loadData(data);
 
         return view;
     }
 
-    public void setData(String data){
+    //récupère données profil
+    public void setData(String data) {
         this.data = data;
 
-        if(resultView != null) {
+        if (resultView != null) {
             loadData(data);
         }
     }
 
-    public void loadData(String data){
-        //resultView.setText(data);
+    //parse le json et affiche les données profil
+    public void loadData(String data) {
+        //liste des données
         List<String> values = new ArrayList<>();
         try {
+            //json parser selon les keys
             JSONObject jsonObject = new JSONObject(data);
             Iterator<?> iterator = jsonObject.keys();
             String result;
+            //boucle sur chaque key du json
             while (iterator.hasNext()) {
                 String key = (String) iterator.next();
+                //récupération data
                 result = key + ": " + jsonObject.getString(key);
+                //ajout à la liste
                 values.add(result);
             }
-            //resultView.setText(result);
+            //affichage des données
             ArrayAdapter adapter = new ArrayAdapter<String>(this.getActivity(), R.layout.frag_2_listview, values);
-            ListView listView = (ListView) getActivity().findViewById(R.id.result_view);
+            ListView listView = getActivity().findViewById(R.id.result_view);
 
             // Possible null
-            if(listView != null) {
+            if (listView != null) {
                 listView.setAdapter(adapter);
             }
+            //message informant user
             Toast.makeText(getActivity(), "Json Data has loaded", Toast.LENGTH_SHORT).show();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -79,35 +86,12 @@ public class Frag_2_Result extends Fragment {
 
 
     }
-    public void setTable(JSONObject j)
-    {
+
+    public void setTable(JSONObject j) {
         try {
-            table=j.getJSONArray("service");
+            table = j.getJSONArray("service");
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-/*
-    public void afficher() throws Exception
-    {
-        //this.removeAllViews();
-        int i;
-        ArrayList<Button> listeButton;
-        listeButton = new ArrayList<Button>();
-        Button b = null;
-        for(i=0;i<table.length();i++)
-        {
-            listeButton.add(new Button(this.getContext()));
-            final String ch = table.getJSONObject(i).optString("title");
-            listeButton.get(listeButton.size()-1).setText(ch.toCharArray(),0,ch.length());
-            listeButton.get(listeButton.size()-1).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    acti.profil = new String(ch);
-                }
-            });
-            //this.addView( listeButton.get(listeButton.size()-1));
-        }
-
-    }*/
 }

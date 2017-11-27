@@ -1,12 +1,8 @@
 package com.rrfvtgb.myapplication;
 
 import android.content.Context;
-import android.support.design.widget.TextInputLayout;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.rrfvtgb.myapplication.element.EditElement;
@@ -17,7 +13,6 @@ import com.rrfvtgb.myapplication.element.RadioElement;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +21,6 @@ import java.util.ArrayList;
 
 public class Formulaire extends LinearLayout  {
     JSONArray table;
-    MainActivity acti;
     String profil;
     ArrayList<FormulaireElement> elements = new ArrayList<>();
 

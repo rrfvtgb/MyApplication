@@ -28,28 +28,10 @@ public class Frag_4_Help extends Fragment {
 
         View view = inflater.inflate(R.layout.frag_4__help, container, false);
 
+//liste d'objets
         List<GroupItem> items = new ArrayList<GroupItem>();
 
-        // Populate our list with groups and it's children
-        /*
-        for(int i = 1; i < 100; i++) {
-
-            GroupItem item = new GroupItem();
-
-            item.title = "Group " + i;
-
-            for(int j = 0; j < i; j++) {
-                ChildItem child = new ChildItem();
-                child.title = "Awesome item " + j;
-                child.hint = "Too awesome";
-
-                item.items.add(child);
-            }
-
-            items.add(item);
-        }
-        */
-
+//création des différents objets et ajout à la liste
         GroupItem home = new GroupItem();
         home.title = "Home";
         ChildItem homechild = new ChildItem();
@@ -69,7 +51,7 @@ public class Frag_4_Help extends Fragment {
         GroupItem setup = new GroupItem();
         setup.title = "Setup";
         ChildItem setupchild = new ChildItem();
-        setupchild.title = "L'onglet 'Setup' permet d'importer un nouveau profil";
+        setupchild.title = "L'onglet 'Setup' permet de sélectionner un profil";
         setupchild.hint = "Aide pour setup";
         setup.items.add(setupchild);
         items.add(setup);
@@ -81,11 +63,11 @@ public class Frag_4_Help extends Fragment {
         helpchild.hint = "Crédits";
         help.items.add(helpchild);
         items.add(help);
-
+//affichage de la liste d'objet avec l'adapter
         adapter = new ExampleAdapter(getContext());
         adapter.setData(items);
 
-        listView = (AnimatedExpandableListView) view.findViewById(R.id.list);
+        listView = view.findViewById(R.id.list);
         listView.setAdapter(adapter);
 
         // In order to show animations, we need to use a custom click handler
@@ -109,7 +91,6 @@ public class Frag_4_Help extends Fragment {
 
         return view;
     }
-
     /*
      * Preparing the list data
      */
@@ -165,8 +146,8 @@ public class Frag_4_Help extends Fragment {
             if (convertView == null) {
                 holder = new ChildHolder();
                 convertView = inflater.inflate(R.layout.frag_4_list_item, parent, false);
-                holder.title = (TextView) convertView.findViewById(R.id.text41);
-                holder.hint = (TextView) convertView.findViewById(R.id.text42);
+                holder.title = convertView.findViewById(R.id.text41);
+                holder.hint = convertView.findViewById(R.id.text42);
                 convertView.setTag(holder);
             } else {
                 holder = (ChildHolder) convertView.getTag();
@@ -205,7 +186,7 @@ public class Frag_4_Help extends Fragment {
             if (convertView == null) {
                 holder = new GroupHolder();
                 convertView = inflater.inflate(R.layout.frag_4_list_group, parent, false);
-                holder.title = (TextView) convertView.findViewById(R.id.lblListHeader);
+                holder.title = convertView.findViewById(R.id.lblListHeader);
                 convertView.setTag(holder);
             } else {
                 holder = (GroupHolder) convertView.getTag();
@@ -225,6 +206,7 @@ public class Frag_4_Help extends Fragment {
         public boolean isChildSelectable(int arg0, int arg1) {
             return true;
         }
+
 
     }
 }

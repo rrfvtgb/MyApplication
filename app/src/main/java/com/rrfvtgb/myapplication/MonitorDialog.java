@@ -15,15 +15,13 @@ import java.util.Locale;
  */
 
 public class MonitorDialog implements Runnable {
+    private final long interval = 2000;
     private AlertDialog dialog;
     private Activity context;
     private Thread thread;
     private TextView processor;
     private TextView memory;
-
     private long lastCpu;
-    private final long interval = 2000;
-
     private float last_CPU;
     private long last_memUsage;
     private long last_memMax;
@@ -56,8 +54,8 @@ public class MonitorDialog implements Runnable {
         // 3. Get the AlertDialog from create()
         this.dialog = builder.create();
 
-        this.processor = (TextView) this.dialog.findViewById(R.id.processor);
-        this.memory = (TextView) this.dialog.findViewById(R.id.memory);
+        this.processor = this.dialog.findViewById(R.id.processor);
+        this.memory = this.dialog.findViewById(R.id.memory);
     }
 
     public void show(){
@@ -66,8 +64,8 @@ public class MonitorDialog implements Runnable {
         }
 
         this.dialog.show();
-        this.processor = (TextView) this.dialog.findViewById(R.id.processor);
-        this.memory = (TextView) this.dialog.findViewById(R.id.memory);
+        this.processor = this.dialog.findViewById(R.id.processor);
+        this.memory = this.dialog.findViewById(R.id.memory);
 
 
         this.thread = new Thread(this);
@@ -135,5 +133,5 @@ public class MonitorDialog implements Runnable {
             this.removeMessages(0);
             sendMessageDelayed(obtainMessage(0), delayMillis);
         }
-    };
+    }
 }

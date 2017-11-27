@@ -1,5 +1,6 @@
 package com.rrfvtgb.myapplication;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -8,14 +9,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.inputmethod.InputMethodManager;
 
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
 public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener {
     private static final String TAG = "MainActivity";
@@ -27,6 +23,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
     private ViewPager mViewPager;
     private MonitorDialog dialog;
     private String activeProfil;
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +41,10 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
         // Instantiate a ViewPager and a PagerAdapter.
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager = findViewById(R.id.container);
         setupViewPager(mViewPager);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        TabLayout tabLayout = findViewById(R.id.tabs);
         tabLayout.addOnTabSelectedListener(this);
         tabLayout.setupWithViewPager(mViewPager);
 
@@ -106,10 +107,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
                 activeProfil = setup.getActiveProfil();
             }
         } else if(tab.getText() == getResources().getString(R.string.title_result)){
+            hideSoftKeyboard(this);
             if(home != null && vueProfil != null){
                 vueProfil.setData(home.computeValue());
             }
-        }
+        } else hideSoftKeyboard(this);
     }
 
     @Override

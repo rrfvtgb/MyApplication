@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,9 +40,8 @@ public class Frag_3_Setup extends Fragment {
         View view = inflater.inflate(R.layout.frag_3__setup, container, false);
 
         load();
-
+        //sélectionneur profil
         profil_spinner = view.findViewById(R.id.profil_select);
-
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getContext(),
                 R.layout.frag_3_profil_item, profils_names);
         profil_spinner.setAdapter(adapter);
@@ -58,6 +56,7 @@ public class Frag_3_Setup extends Fragment {
         }
     }
 
+    //charge les différents profils
     public void preload(Context c){
         try {
             populateMap(c);

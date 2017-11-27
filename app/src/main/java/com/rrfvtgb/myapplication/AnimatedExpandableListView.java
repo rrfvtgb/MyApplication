@@ -36,6 +36,9 @@ import java.util.List;
 
 /**
  * Created by Amaury on 13/11/2017.
+ *
+ * Copyright (C) 2014 Gary Guo
+ *
  */
 
 public class AnimatedExpandableListView extends ExpandableListView {

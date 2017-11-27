@@ -17,12 +17,6 @@ public class Frag_1_Home extends Fragment {
 
     private JSONObject profilData;
 
-    /*
-    public Frag_1_Home(MainActivity acti){
-        this.acti=acti;
-    }
-*/
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -30,10 +24,10 @@ public class Frag_1_Home extends Fragment {
         View view = inflater.inflate(R.layout.frag_1__home, container, false);
         RelativeLayout v = view.findViewById(R.id.tab1);
 
-        if(vueFormulaire == null) {
+        if (vueFormulaire == null) {
             vueFormulaire = new Formulaire(this.getContext());
 
-            if(profilData != null){
+            if (profilData != null) {
                 try {
                     vueFormulaire.setProfil(profilData);
                     profilData = null;
@@ -41,7 +35,7 @@ public class Frag_1_Home extends Fragment {
                     e.printStackTrace();
                 }
             }
-        }else{
+        } else {
             ((ViewGroup) vueFormulaire.getParent()).removeView(vueFormulaire);
         }
 
@@ -51,15 +45,17 @@ public class Frag_1_Home extends Fragment {
         return view;
     }
 
+    //selection du profil
     public void setProfilData(JSONObject obj) throws JSONException {
-        if(vueFormulaire != null) {
+        if (vueFormulaire != null) {
             vueFormulaire.setProfil(obj);
-        }else{
+        } else {
             profilData = obj;
         }
     }
 
-    public String computeValue(){
+    //récupère les infos du profil
+    public String computeValue() {
         return vueFormulaire.computeValue();
     }
 }
