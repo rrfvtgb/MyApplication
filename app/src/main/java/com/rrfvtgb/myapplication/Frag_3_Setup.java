@@ -39,9 +39,11 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
     protected ArrayList<String> profils_names = new ArrayList<>();
 
     protected Spinner profil_spinner;
+    protected ArrayAdapter<String> adapter;
 
     protected Button input;
     protected Button output;
+    protected Button delete_profil;
 
     @Nullable
     @Override
@@ -51,27 +53,37 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
 
         input = view.findViewById(R.id.profil_in);
         output = view.findViewById(R.id.profil_out);
+        delete_profil = view.findViewById(R.id.delete_profil);
 
-        load();
-        //sélectionneur profil
         profil_spinner = view.findViewById(R.id.profil_select);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
+        adapter = new ArrayAdapter<>(this.getContext(),
                 R.layout.frag_3_profil_item, profils_names);
         profil_spinner.setAdapter(adapter);
 
         input.setOnClickListener(this);
         output.setOnClickListener(this);
+        delete_profil.setOnClickListener(this);
+
+        load();
 
         return view;
     }
 
+    /**
+     * Charge le JSON si il n'a pas été chargé
+     * et que le contexte du fragment a été défini
+     */
     protected void load() {
         if (profils.isEmpty() && this.getContext() != null) {
             preload(this.getContext());
         }
     }
 
-    //charge les différents profils
+    /**
+     * Précharge les profils
+     *
+     * @param c Le context contenant l'asset / le fileDir
+     */
     public void preload(Context c) {
         try {
             populateMap(c);
@@ -80,26 +92,47 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     *
+     * @return Renvoie le nom du profil actif
+     */
     public String getActiveProfil() {
         if (profil_spinner != null) {
             return (String) profil_spinner.getSelectedItem();
-        } else {
+        } else if (profils_names.size() > 0){
             return profils_names.get(0);
+        } else {
+            return "N/A";
         }
     }
 
+    /**
+     *
+     * @return Renvoie les informations associé au profil actif
+     */
     public JSONObject getProfilData() {
         load();
 
         return profils.get(this.getActiveProfil());
     }
 
+    /**
+     * Charge le JSON et rempli la map profils des données
+     * @param c Context d'execution
+     * @throws JSONException
+     */
     protected void populateMap(Context c) throws JSONException {
         JSONObject data = readJSON(c);
 
         mergeJSON(data);
     }
 
+    /**
+     * Fusionne les objets JSON avec celui mémoire
+     * pour obtenir une seul array d'objet
+     * @param data
+     * @throws JSONException
+     */
     private void mergeJSON(JSONObject data) throws JSONException {
         JSONArray services = data.optJSONArray("service");
 
@@ -108,13 +141,22 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
 
             String title = s.getString("title");
 
+            if (!profils.containsKey(title)) {
+                profils_names.add(title);
+            } else {
+                profils.remove(title);
+            }
+
             profils.put(title, s);
-            profils_names.add(title);
 
             Log.i(TAG, "Added " + title);
         }
     }
 
+    /**
+     * Enregistre l'objet JSON dans un fichier local
+     * @param data L'objet contenant les fichiers
+     */
     protected void saveJSON(JSONObject data) {
         File file = new File(this.getContext().getFilesDir(), "service.json");
 
@@ -129,6 +171,9 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * Enregistre les informations du profil actuel dans un fichier local
+     */
     protected void saveProfil() {
         JSONObject profil = new JSONObject();
         JSONArray services = new JSONArray();
@@ -149,6 +194,11 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * @param c Context d'execution
+     * @return Renvoie un inputstream du fichier JSON à ouvrir
+     * @throws IOException
+     */
     protected InputStream JSONStream(Context c) throws IOException {
         File cache = new File(c.getFilesDir(), "service.json");
 
@@ -159,6 +209,10 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     * @param c Context d'execution
+     * @return Renvoie les JSON lu à partir du fichier
+     */
     protected JSONObject readJSON(Context c) {
         //Read text from file
         StringBuilder text = new StringBuilder();
@@ -188,6 +242,9 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         return null;
     }
 
+    /**
+     * Demande l'ouverture d'un fichier
+     */
     public void askImport() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("*/*");
@@ -196,6 +253,9 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         startActivityForResult(intent, IMPORT_JSON_REQUEST);
     }
 
+    /**
+     * Demande l'enregistrement du fichier des profils
+     */
     public void askExport() {
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -203,21 +263,45 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
                 FileProvider.getUriForFile(this.getContext(), AUTHORITY,
                         new File(this.getContext().getFilesDir(), "service.json")));
         sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        sendIntent.setType("text/plain");
+        sendIntent.setType("application/json");
         startActivity(sendIntent);
 
         Log.i(TAG, "Exported profil");
     }
 
+    /**
+     * Supprimer le profil selectionné
+     */
+    public void deleteCurrentProfil() {
+        String name = this.getActiveProfil();
+
+        this.profils_names.remove(name);
+        this.profils.remove(name);
+
+        this.adapter.notifyDataSetChanged();
+
+        this.saveProfil();
+    }
+
+    /**
+     * Detecte le click sur un bouton
+     * @param view
+     */
     @Override
     public void onClick(View view) {
         if (view == input) {
             askImport();
         } else if (view == output) {
             askExport();
+        } else if (view == delete_profil) {
+            deleteCurrentProfil();
         }
     }
 
+    /**
+     * Parse le result d'import via le bouton import
+     * @param data l'intent contenant les données
+     */
     public void resultImport(Intent data) {
         try {
             Uri uri = data.getData();
@@ -234,6 +318,11 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
         }
     }
 
+    /**
+     *
+     * @param uri
+     * @throws IOException
+     */
     private void importFile(Uri uri)
             throws IOException {
         //Read text from file
@@ -262,16 +351,20 @@ public class Frag_3_Setup extends Fragment implements View.OnClickListener {
 
             mergeJSON(json);
 
-            saveProfil();
+            adapter.notifyDataSetChanged();
 
-            ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getContext(),
-                    R.layout.frag_3_profil_item, profils_names);
-            profil_spinner.setAdapter(adapter);
+            saveProfil();
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Reception de l'import de fichier
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "Activity Result" + requestCode + " : " + resultCode);

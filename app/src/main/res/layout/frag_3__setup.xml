@@ -19,9 +19,21 @@
         android:entries="@android:drawable/arrow_down_float"
         android:padding="10dp" />
 
+    <Button
+        android:id="@+id/delete_profil"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:text="Supprimer" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_weight="0" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -42,5 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/profil_out_text" />
+
     </LinearLayout>
+
 </LinearLayout>

@@ -44,6 +44,10 @@ public class Formulaire extends LinearLayout  {
         this.removeAllViews();
         elements.clear();
 
+        if (profil == null) {
+            return;
+        }
+
         // Ajout du titre
         TextView titre = new TextView(this.getContext());
         titre.setText(profil.optString("title"));
