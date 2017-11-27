@@ -1,6 +1,7 @@
 package com.rrfvtgb.myapplication;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -129,4 +130,11 @@ public class MainActivity extends AppCompatActivity implements TabLayout.OnTabSe
 
     @Override
     public void onTabReselected(TabLayout.Tab tab) {}
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d(TAG, "Activity Result" + requestCode + " : " + resultCode);
+    }
 }
