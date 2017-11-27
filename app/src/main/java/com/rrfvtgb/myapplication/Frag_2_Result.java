@@ -18,10 +18,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by fabie on 09/10/2017.
- */
-
 public class Frag_2_Result extends Fragment {
     private static final String TAG = "Frag_2_Result";
 
@@ -94,6 +90,9 @@ public class Frag_2_Result extends Fragment {
 
     }
 
+    /**
+     * @param j
+     */
     public void setTable(JSONObject j) {
         try {
             table = j.getJSONArray("service");
